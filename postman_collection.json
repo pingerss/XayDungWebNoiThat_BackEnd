@@ -1,0 +1,547 @@
+{
+	"info": {
+		"name": "Nội Thất E-Commerce API",
+		"description": "Full API collection for Node.js BFF Backend - 15 tables, ~125+ endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{ "key": "baseUrl", "value": "http://localhost:3000/api" },
+		{ "key": "token", "value": "" },
+		{ "key": "adminToken", "value": "" }
+	],
+	"item": [
+		{
+			"name": "👤 CUSTOMER",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/customers/register",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Nguyen Van A\",\n  \"email\": \"test@gmail.com\",\n  \"password\": \"123456\"\n}" }
+					}
+				},
+				{
+					"name": "Login",
+					"event": [{ "listen": "test", "script": { "exec": ["var res = pm.response.json();\nif(res.data && res.data.token) {\n  pm.collectionVariables.set('token', res.data.token);\n}"] } }],
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/customers/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"test@gmail.com\",\n  \"password\": \"123456\"\n}" }
+					}
+				},
+				{
+					"name": "Get Profile",
+					"request": { "method": "GET", "url": "{{baseUrl}}/customers/profile", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] }
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/customers/profile",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Nguyen Van B\"\n}" }
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/customers/change-password",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"currentPassword\": \"123456\",\n  \"newPassword\": \"654321\"\n}" }
+					}
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/customers/forgot-password",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"test@gmail.com\"\n}" }
+					}
+				},
+				{
+					"name": "Reset Password",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/customers/reset-password",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"token\": \"your_reset_token\",\n  \"newPassword\": \"newpass123\"\n}" }
+					}
+				},
+				{
+					"name": "Google Login",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/customers/google",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"idGoogle\": \"google_id_123\",\n  \"email\": \"google@gmail.com\",\n  \"name\": \"Google User\"\n}" }
+					}
+				},
+				{
+					"name": "Verify Email",
+					"request": { "method": "GET", "url": "{{baseUrl}}/customers/verify-email/your_token_here" }
+				},
+				{
+					"name": "Logout",
+					"request": { "method": "POST", "url": "{{baseUrl}}/customers/logout", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] }
+				},
+				{
+					"name": "Deactivate Account",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/customers/deactivate", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] }
+				}
+			]
+		},
+		{
+			"name": "📁 CATEGORY",
+			"item": [
+				{ "name": "Get All", "request": { "method": "GET", "url": "{{baseUrl}}/categories" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/categories/1" } },
+				{ "name": "Get Tree", "request": { "method": "GET", "url": "{{baseUrl}}/categories/tree" } },
+				{ "name": "Get Products By Category", "request": { "method": "GET", "url": "{{baseUrl}}/categories/1/products" } },
+				{ "name": "Get Promotions By Category", "request": { "method": "GET", "url": "{{baseUrl}}/categories/promotions/1" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/categories",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Phòng khách\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/categories/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Phòng ngủ\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Delete",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/categories/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				},
+				{
+					"name": "[ADMIN] Reorder",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/categories/reorder",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"orderedIds\": [3, 1, 2]\n}" }
+					}
+				}
+			]
+		},
+		{
+			"name": "🎨 COLOR",
+			"item": [
+				{ "name": "Get All", "request": { "method": "GET", "url": "{{baseUrl}}/colors" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/colors/1" } },
+				{ "name": "Get Active", "request": { "method": "GET", "url": "{{baseUrl}}/colors/active" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/colors",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Đỏ\",\n  \"hexCode\": \"#FF0000\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/colors/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Xanh\",\n  \"hexCode\": \"#0000FF\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Delete",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/colors/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				}
+			]
+		},
+		{
+			"name": "📏 DIMENSIONS",
+			"item": [
+				{ "name": "Get All", "request": { "method": "GET", "url": "{{baseUrl}}/dimensions" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/dimensions/1" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/dimensions",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"120x60x75cm\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/dimensions/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"150x80x75cm\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Delete",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/dimensions/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				}
+			]
+		},
+		{
+			"name": "📦 PRODUCT",
+			"item": [
+				{ "name": "Get All (with filters)", "request": { "method": "GET", "url": { "raw": "{{baseUrl}}/products?page=1&limit=10&sortBy=createdAt&sortOrder=DESC", "host": ["{{baseUrl}}"], "path": ["products"], "query": [{ "key": "page", "value": "1" }, { "key": "limit", "value": "10" }, { "key": "sortBy", "value": "createdAt" }, { "key": "sortOrder", "value": "DESC" }, { "key": "categoryId", "value": "1", "disabled": true }, { "key": "minPrice", "value": "100000", "disabled": true }, { "key": "maxPrice", "value": "5000000", "disabled": true }, { "key": "keyword", "value": "sofa", "disabled": true }] } } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/products/1" } },
+				{ "name": "Search", "request": { "method": "GET", "url": "{{baseUrl}}/products/search?keyword=sofa&page=1&limit=10" } },
+				{ "name": "Trending", "request": { "method": "GET", "url": "{{baseUrl}}/products/trending" } },
+				{ "name": "New Arrivals", "request": { "method": "GET", "url": "{{baseUrl}}/products/new-arrivals" } },
+				{ "name": "Best Sellers", "request": { "method": "GET", "url": "{{baseUrl}}/products/best-sellers" } },
+				{ "name": "Related Products", "request": { "method": "GET", "url": "{{baseUrl}}/products/related/1" } },
+				{ "name": "By Category", "request": { "method": "GET", "url": "{{baseUrl}}/products/category/1" } },
+				{ "name": "Attribute Detail", "request": { "method": "GET", "url": "{{baseUrl}}/products/attributes/1" } },
+				{ "name": "Check Stock", "request": { "method": "GET", "url": "{{baseUrl}}/products/stock/1" } },
+				{ "name": "Increment View", "request": { "method": "POST", "url": "{{baseUrl}}/products/1/view" } },
+				{
+					"name": "[ADMIN] Create Product",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/products",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"categoryId\": 1,\n  \"name\": \"Sofa phòng khách\",\n  \"description\": \"Sofa cao cấp nhập khẩu\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update Product",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/products/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Sofa premium\",\n  \"description\": \"Updated description\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Delete Product",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/products/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				}
+			]
+		},
+		{
+			"name": "🏷️ PRODUCT ATTRIBUTES",
+			"item": [
+				{ "name": "Get By Product", "request": { "method": "GET", "url": "{{baseUrl}}/product-attributes/product/1" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/product-attributes/1" } },
+				{ "name": "Check Stock", "request": { "method": "GET", "url": "{{baseUrl}}/product-attributes/1/stock" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/product-attributes",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"productId\": 1,\n  \"colorId\": 1,\n  \"dimensionsId\": 1,\n  \"name\": \"Sofa đỏ - 120cm\",\n  \"price\": 5000000,\n  \"stock\": 10\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/product-attributes/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"price\": 4500000,\n  \"stock\": 15\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update Stock",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/product-attributes/1/stock",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"stock\": 20\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Delete",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/product-attributes/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				}
+			]
+		},
+		{
+			"name": "🖼️ PRODUCT IMAGE",
+			"item": [
+				{ "name": "Get By Product", "request": { "method": "GET", "url": "{{baseUrl}}/product-images/product/1" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/product-images/1" } },
+				{
+					"name": "[ADMIN] Upload Image",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/product-images",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+						"body": { "mode": "formdata", "formdata": [{ "key": "image", "type": "file", "src": "" }, { "key": "productId", "type": "text", "value": "1" }, { "key": "productAttributeId", "type": "text", "value": "1" }, { "key": "isMain", "type": "text", "value": "true" }] }
+					}
+				},
+				{
+					"name": "[ADMIN] Set Main",
+					"request": { "method": "PUT", "url": "{{baseUrl}}/admin/product-images/1/main", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				},
+				{
+					"name": "[ADMIN] Delete",
+					"request": { "method": "DELETE", "url": "{{baseUrl}}/admin/product-images/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] }
+				}
+			]
+		},
+		{
+			"name": "🛒 CART",
+			"item": [
+				{ "name": "Get Cart", "request": { "method": "GET", "url": "{{baseUrl}}/cart", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get Items Count", "request": { "method": "GET", "url": "{{baseUrl}}/cart/items/count", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get Total", "request": { "method": "GET", "url": "{{baseUrl}}/cart/total", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{
+					"name": "Add Item",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/cart/add",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"productId\": 1,\n  \"productAttributeId\": 1,\n  \"quantity\": 2\n}" }
+					}
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/cart/update/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"quantity\": 3\n}" }
+					}
+				},
+				{ "name": "Remove Item", "request": { "method": "DELETE", "url": "{{baseUrl}}/cart/remove/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Clear Cart", "request": { "method": "DELETE", "url": "{{baseUrl}}/cart/clear", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{
+					"name": "Apply Promotion",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/cart/apply-promotion",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"code\": \"SALE10\"\n}" }
+					}
+				},
+				{ "name": "Remove Promotion", "request": { "method": "DELETE", "url": "{{baseUrl}}/cart/remove-promotion", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{
+					"name": "Sync Cart",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/cart/sync",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"items\": [\n    { \"productId\": 1, \"productAttributeId\": 1, \"quantity\": 1 }\n  ]\n}" }
+					}
+				},
+				{ "name": "Checkout Info", "request": { "method": "GET", "url": "{{baseUrl}}/cart/checkout-info", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get All Items", "request": { "method": "GET", "url": "{{baseUrl}}/cart/items", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get Item By ID", "request": { "method": "GET", "url": "{{baseUrl}}/cart/items/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{
+					"name": "Update Item Quantity",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/cart/items/1/quantity",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"quantity\": 5\n}" }
+					}
+				},
+				{ "name": "Delete Item", "request": { "method": "DELETE", "url": "{{baseUrl}}/cart/items/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } }
+			]
+		},
+		{
+			"name": "🎁 PROMOTION",
+			"item": [
+				{ "name": "Get Active", "request": { "method": "GET", "url": "{{baseUrl}}/promotions" } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/promotions/1" } },
+				{ "name": "Validate Code", "request": { "method": "GET", "url": "{{baseUrl}}/promotions/validate/SALE10" } },
+				{ "name": "Get By Code", "request": { "method": "GET", "url": "{{baseUrl}}/promotions/code/SALE10" } },
+				{ "name": "For Product", "request": { "method": "GET", "url": "{{baseUrl}}/promotions/for-product/1" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/promotions",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"code\": \"SALE10\",\n  \"name\": \"Giảm 10%\",\n  \"description\": \"Giảm 10% cho tất cả sản phẩm\",\n  \"type\": \"percentage\",\n  \"value\": 10,\n  \"startDay\": \"2024-01-01\",\n  \"endDay\": \"2026-12-31\"\n}" }
+					}
+				},
+				{
+					"name": "[ADMIN] Update",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/promotions/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"value\": 15\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Delete", "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/promotions/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Activate", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/promotions/1/activate", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Deactivate", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/promotions/1/deactivate", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Get All", "request": { "method": "GET", "url": "{{baseUrl}}/admin/promotions/all", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "🔗 CATEGORY PROMOTION",
+			"item": [
+				{ "name": "Get By Category", "request": { "method": "GET", "url": "{{baseUrl}}/category-promotions/category/1" } },
+				{ "name": "Get By Promotion", "request": { "method": "GET", "url": "{{baseUrl}}/category-promotions/promotion/1" } },
+				{
+					"name": "[ADMIN] Create",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/category-promotions",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"categoryId\": 1,\n  \"promotionId\": 1\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Delete", "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/category-promotions/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Get All", "request": { "method": "GET", "url": "{{baseUrl}}/admin/category-promotions", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "📦 ORDER",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/orders",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"customerName\": \"Nguyen Van A\",\n  \"customerPhone\": \"0901234567\",\n  \"customerAddress\": \"123 Nguyen Hue, Q1, HCM\",\n  \"method\": \"cod\",\n  \"note\": \"Giao giờ hành chính\"\n}" }
+					}
+				},
+				{ "name": "Get My Orders", "request": { "method": "GET", "url": "{{baseUrl}}/orders?page=1&limit=10", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/orders/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get Status", "request": { "method": "GET", "url": "{{baseUrl}}/orders/1/status", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Cancel Order", "request": { "method": "PUT", "url": "{{baseUrl}}/orders/1/cancel", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Confirm Order (COD)", "request": { "method": "POST", "url": "{{baseUrl}}/orders/1/confirm", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Tracking", "request": { "method": "GET", "url": "{{baseUrl}}/orders/tracking/1" } },
+				{ "name": "Reorder", "request": { "method": "POST", "url": "{{baseUrl}}/orders/1/reorder", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "[ADMIN] Get All", "request": { "method": "GET", "url": "{{baseUrl}}/admin/orders?page=1&limit=10", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/admin/orders/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{
+					"name": "[ADMIN] Update Status",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/orders/1/status",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"status\": \"confirmed\"\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Assign Shipper", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/orders/1/assign-shipper", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Filter", "request": { "method": "GET", "url": "{{baseUrl}}/admin/orders/filter?status=pending&page=1&limit=10", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Statistics", "request": { "method": "GET", "url": "{{baseUrl}}/admin/orders/statistics", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "📋 ORDER DETAIL",
+			"item": [
+				{ "name": "Get By Order", "request": { "method": "GET", "url": "{{baseUrl}}/order-details/order/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/order-details/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "[ADMIN] Get By Order", "request": { "method": "GET", "url": "{{baseUrl}}/admin/order-details/order/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "💳 PAYMENT",
+			"item": [
+				{
+					"name": "Create VNPay",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/payments/vnpay/create",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"orderId\": 1\n}" }
+					}
+				},
+				{ "name": "VNPay Callback", "request": { "method": "GET", "url": "{{baseUrl}}/payments/vnpay/callback?vnp_TxnRef=VNP_ABC123&vnp_ResponseCode=00" } },
+				{ "name": "VNPay Return", "request": { "method": "GET", "url": "{{baseUrl}}/payments/vnpay/return?vnp_TxnRef=VNP_ABC123&vnp_ResponseCode=00" } },
+				{ "name": "Get Status", "request": { "method": "GET", "url": "{{baseUrl}}/payments/1/status", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{ "name": "Get By Order", "request": { "method": "GET", "url": "{{baseUrl}}/payments/order/1", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }] } },
+				{
+					"name": "Confirm COD",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/payments/cod/confirm",
+						"header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"orderId\": 1\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Get All", "request": { "method": "GET", "url": "{{baseUrl}}/admin/payments", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Get By ID", "request": { "method": "GET", "url": "{{baseUrl}}/admin/payments/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Refund", "request": { "method": "POST", "url": "{{baseUrl}}/admin/payments/1/refund", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "👨‍💼 STAFF",
+			"item": [
+				{
+					"name": "Staff Login",
+					"event": [{ "listen": "test", "script": { "exec": ["var res = pm.response.json();\nif(res.data && res.data.token) {\n  pm.collectionVariables.set('adminToken', res.data.token);\n}"] } }],
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/staff/login",
+						"header": [{ "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@noithat.com\",\n  \"password\": \"admin123\"\n}" }
+					}
+				},
+				{ "name": "Staff Logout", "request": { "method": "POST", "url": "{{baseUrl}}/staff/logout", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "Staff Profile", "request": { "method": "GET", "url": "{{baseUrl}}/staff/profile", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/staff/profile",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Admin Updated\"\n}" }
+					}
+				},
+				{
+					"name": "Change Password",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/staff/change-password",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"currentPassword\": \"admin123\",\n  \"newPassword\": \"newadmin123\"\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Get All Staff", "request": { "method": "GET", "url": "{{baseUrl}}/admin/staff", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{
+					"name": "[ADMIN] Create Staff",
+					"request": {
+						"method": "POST",
+						"url": "{{baseUrl}}/admin/staff",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Nhan vien moi\",\n  \"email\": \"staff@noithat.com\",\n  \"password\": \"staff123\",\n  \"type\": \"Staff\"\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Get Staff By ID", "request": { "method": "GET", "url": "{{baseUrl}}/admin/staff/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{
+					"name": "[ADMIN] Update Staff",
+					"request": {
+						"method": "PUT",
+						"url": "{{baseUrl}}/admin/staff/1",
+						"header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+						"body": { "mode": "raw", "raw": "{\n  \"name\": \"Updated Staff\"\n}" }
+					}
+				},
+				{ "name": "[ADMIN] Delete Staff", "request": { "method": "DELETE", "url": "{{baseUrl}}/admin/staff/1", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Activate Staff", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/staff/1/activate", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } },
+				{ "name": "[ADMIN] Deactivate Staff", "request": { "method": "PUT", "url": "{{baseUrl}}/admin/staff/1/deactivate", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }] } }
+			]
+		},
+		{
+			"name": "🏥 HEALTH CHECK",
+			"item": [
+				{ "name": "Health Check", "request": { "method": "GET", "url": "http://localhost:3000/health" } }
+			]
+		}
+	]
+}
