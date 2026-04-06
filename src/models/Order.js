@@ -6,73 +6,73 @@ const Order = sequelize.define('Order', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   customerId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Customer Id'
+    field: 'customer_id'
   },
   promotionId: {
     type: DataTypes.INTEGER,
-    field: 'Promotion Id'
+    field: 'promotion_id'
   },
   customerName: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Customer Name'
+    field: 'customer_name'
   },
   customerPhone: {
     type: DataTypes.STRING(15),
     allowNull: false,
-    field: 'Customer Phone'
+    field: 'customer_phone'
   },
   customerAddress: {
     type: DataTypes.STRING(100),
     allowNull: false,
-    field: 'Customer Address'
+    field: 'customer_address'
   },
   method: {
     type: DataTypes.ENUM('vnpay', 'cod'),
     allowNull: false,
-    field: 'Method'
+    field: 'method'
   },
   subtotal: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
-    field: 'Subtotal'
+    field: 'subtotal'
   },
   discountAmount: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
     defaultValue: 0,
-    field: 'Discount Amount'
+    field: 'discount_amount'
   },
   totalPrice: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
-    field: 'Total Price'
+    field: 'total_price'
   },
   status: {
     type: DataTypes.ENUM('pending', 'confirmed', 'shipping', 'completed', 'cancelled'),
     allowNull: false,
     defaultValue: 'pending',
-    field: 'Status'
+    field: 'status'
   },
   note: {
     type: DataTypes.TEXT,
-    field: 'Note'
+    field: 'note'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Order',
+  tableName: 'order',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

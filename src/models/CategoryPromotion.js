@@ -6,28 +6,28 @@ const CategoryPromotion = sequelize.define('CategoryPromotion', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   categoryId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Category Id'
+    field: 'category_id'
   },
   promotionId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Promotion Id'
+    field: 'promotion_id'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Category Promotion',
+  tableName: 'category_promotion',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

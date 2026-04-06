@@ -6,39 +6,39 @@ const ProductImage = sequelize.define('ProductImage', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   productId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Product Id'
+    field: 'product_id'
   },
   productAttributeId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Product Attribute Id'
+    field: 'product_attribute_id'
   },
   imageUrl: {
     type: DataTypes.STRING(500),
     allowNull: false,
-    field: 'Image Url'
+    field: 'image_url'
   },
   isMain: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: false,
-    field: 'Is Main'
+    field: 'is_main'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Product Image',
+  tableName: 'product_image',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

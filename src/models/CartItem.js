@@ -6,43 +6,43 @@ const CartItem = sequelize.define('CartItem', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   cartId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Cart Id'
+    field: 'cart_id'
   },
   productId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Product Id'
+    field: 'product_id'
   },
   productAttributeId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Product Attribute Id'
+    field: 'product_attribute_id'
   },
   quantity: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Quantity'
+    field: 'quantity'
   },
   price: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
-    field: 'Price'
+    field: 'price'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Cart Item',
+  tableName: 'cart_item',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

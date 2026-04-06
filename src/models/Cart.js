@@ -6,28 +6,28 @@ const Cart = sequelize.define('Cart', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   customerId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Customer Id'
+    field: 'customer_id'
   },
   sessionId: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Session Id'
+    field: 'session_id'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Cart',
+  tableName: 'cart',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

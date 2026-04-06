@@ -6,33 +6,33 @@ const Product = sequelize.define('Product', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   categoryId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Category Id'
+    field: 'category_id'
   },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Name'
+    field: 'name'
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
-    field: 'Description'
+    field: 'description'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Product',
+  tableName: 'product',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

@@ -6,23 +6,23 @@ const Category = sequelize.define('Category', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Name'
+    field: 'name'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Category',
+  tableName: 'category',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

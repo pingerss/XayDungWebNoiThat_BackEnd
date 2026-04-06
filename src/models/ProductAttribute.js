@@ -6,49 +6,49 @@ const ProductAttribute = sequelize.define('ProductAttribute', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   productId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Product Id'
+    field: 'product_id'
   },
   colorId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Color Id'
+    field: 'color_id'
   },
   dimensionsId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Dimensions Id'
+    field: 'dimensions_id'
   },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Name'
+    field: 'name'
   },
   price: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
-    field: 'Price'
+    field: 'price'
   },
   stock: {
     type: DataTypes.INTEGER,
     allowNull: false,
     defaultValue: 0,
-    field: 'Stock'
+    field: 'stock'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Product Attributes',
+  tableName: 'product_attributes',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

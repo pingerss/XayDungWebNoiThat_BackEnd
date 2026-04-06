@@ -6,44 +6,44 @@ const Payment = sequelize.define('Payment', {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   orderId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    field: 'Order Id'
+    field: 'order_id'
   },
   method: {
     type: DataTypes.ENUM('vnpay', 'cod'),
     allowNull: false,
-    field: 'Method'
+    field: 'method'
   },
   transactionId: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Transaction Id'
+    field: 'transaction_id'
   },
   amount: {
     type: DataTypes.DECIMAL(15, 2),
     allowNull: false,
-    field: 'Amount'
+    field: 'amount'
   },
   status: {
     type: DataTypes.ENUM('pending', 'success', 'failed'),
     allowNull: false,
     defaultValue: 'pending',
-    field: 'Status'
+    field: 'status'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Payment',
+  tableName: 'payment',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

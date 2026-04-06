@@ -6,47 +6,47 @@ const Staff = sequelize.define('Staff', {
     type: DataTypes.INTEGER.UNSIGNED,
     autoIncrement: true,
     primaryKey: true,
-    field: 'Id'
+    field: 'id'
   },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Name'
+    field: 'name'
   },
   email: {
     type: DataTypes.STRING(255),
     allowNull: false,
-    field: 'Email'
+    field: 'email'
   },
   password: {
     type: DataTypes.STRING(255),
-    field: 'Password'
+    field: 'password'
   },
   type: {
     type: DataTypes.ENUM('Staff', 'Admin'),
     allowNull: false,
-    field: 'Type'
+    field: 'type'
   },
   isActive: {
     type: DataTypes.BOOLEAN,
     allowNull: false,
     defaultValue: true,
-    field: 'Is Active'
+    field: 'is_active'
   },
   idGoogle: {
     type: DataTypes.STRING(255),
-    field: 'Id Google'
+    field: 'id_google'
   },
   createdAt: {
     type: DataTypes.DATE,
-    field: 'Created At'
+    field: 'created_at'
   },
   updatedAt: {
     type: DataTypes.DATE,
-    field: 'Updated At'
+    field: 'updated_at'
   }
 }, {
-  tableName: 'Staff',
+  tableName: 'staff',
   timestamps: true,
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
