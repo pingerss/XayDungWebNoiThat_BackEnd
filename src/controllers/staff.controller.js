@@ -7,8 +7,8 @@ const { ROLES, STAFF_TYPE } = require('../config/constants');
 // POST /api/staff/login
 const login = async (req, res, next) => {
   try {
-    const response = await springApi.post('/staff/verify', req.body);
-    const staff = response.data;
+    const response = await springApi.post('/auth/login', req.body);
+    const staff = response.data.result || response.data;
 
     // Node.js tạo JWT
     const scope = staff.type === STAFF_TYPE.ADMIN ? ROLES.ADMIN : ROLES.STAFF;
@@ -51,7 +51,7 @@ const updateProfile = async (req, res, next) => {
 
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/staff/${req.user.maKH}/password`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
+    await springApi.put(`/staff/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -82,11 +82,11 @@ const adminDelete = async (req, res, next) => {
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminActivate = async (req, res, next) => {
-  try { const r = await springApi.put(`/staff/${req.params.id}/status`, { isActive: true }); return successResponse(res, r.data, 'Kích hoạt thành công'); }
+  try { const r = await springApi.put(`/staff/${req.params.id}/activate`); return successResponse(res, r.data, 'Kích hoạt thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminDeactivate = async (req, res, next) => {
-  try { const r = await springApi.put(`/staff/${req.params.id}/status`, { isActive: false }); return successResponse(res, r.data, 'Vô hiệu hóa thành công'); }
+  try { const r = await springApi.put(`/staff/${req.params.id}/deactivate`); return successResponse(res, r.data, 'Vô hiệu hóa thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 

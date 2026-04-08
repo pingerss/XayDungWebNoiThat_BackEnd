@@ -22,8 +22,9 @@ const register = async (req, res, next) => {
 // POST /api/customers/login
 const login = async (req, res, next) => {
   try {
-    const response = await springApi.post('/customers/verify', req.body);
-    const customer = response.data;
+    const response = await springApi.post('/auth/login', req.body);
+    // Spring Boot trả về cấu trúc { code, message, result: { ... } }
+    const customer = response.data.result || response.data;
 
     // Node.js tạo JWT token
     const token = jwt.sign(
@@ -52,11 +53,16 @@ const logout = async (req, res, next) => {
 // GET /api/customers/profile
 const getProfile = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/customers/${req.user.maKH}`, withUserHeaders(req.user.maKH, req.user.scope));
-    return successResponse(res, response.data, 'Lấy profile thành công');
+    const headers = { ...withUserHeaders(req.user.maKH, req.user.scope).headers };
+    if (req.header('Authorization')) headers['Authorization'] = req.header('Authorization');
+
+    const response = await springApi.get(`/customers/${req.user.maKH}`, { headers });
+    // Bóc tách result nếu Spring Boot dùng vỏ bọc cho profile
+    const profileData = response.data.result || response.data;
+    return successResponse(res, profileData, 'Lấy profile thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
-    if (error.response) return errorResponse(res, 'Không tìm thấy tài khoản', error.response.status);
+    if (error.response) return errorResponse(res, error.response.data?.message || 'Lỗi từ máy chủ Spring', error.response.status);
     next(error);
   }
 };
@@ -76,7 +82,7 @@ const updateProfile = async (req, res, next) => {
 // PUT /api/customers/change-password
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/password`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
+    await springApi.put(`/customers/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -88,30 +94,31 @@ const changePassword = async (req, res, next) => {
 // POST /api/customers/forgot-password
 const forgotPassword = async (req, res, next) => {
   try {
-    // Tìm customer qua Spring Boot
-    const response = await springApi.get(`/customers/email/${req.body.email}`);
-    if (response.data) {
-      const resetToken = jwt.sign({ id: response.data.id, email: response.data.email }, process.env.JWT_SECRET, { expiresIn: '15m' });
-      // TODO: Gửi email reset password
-    }
-    return successResponse(res, null, 'Nếu email tồn tại, chúng tôi đã gửi link đặt lại mật khẩu.');
+    await springApi.post('/auth/forgot-password', { email: req.body.email });
+    return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
   } catch (error) {
-    // Luôn trả success để không leak info
-    return successResponse(res, null, 'Nếu email tồn tại, chúng tôi đã gửi link đặt lại mật khẩu.');
+    return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
+  }
+};
+
+// Vui lòng thêm route POST /api/customers/verify-otp ở file router (gọi hàm này)
+const verifyOtp = async (req, res, next) => {
+  try {
+    await springApi.post('/auth/verify-otp', { email: req.body.email, otp: req.body.otp });
+    return successResponse(res, null, 'OTP hợp lệ');
+  } catch (error) {
+    if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
+    return errorResponse(res, 'Mã OTP không hợp lệ hoặc đã hết hạn', 400, 'Bad Request');
   }
 };
 
 // POST /api/customers/reset-password
 const resetPassword = async (req, res, next) => {
   try {
-    const { token, newPassword } = req.body;
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    await springApi.put(`/customers/${decoded.id}/password`, { newPassword });
+    const { email, otp, newPassword } = req.body;
+    await springApi.post('/auth/reset-password', { email, otp, newPassword });
     return successResponse(res, null, 'Đặt lại mật khẩu thành công');
   } catch (error) {
-    if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-      return errorResponse(res, 'Token không hợp lệ hoặc đã hết hạn', 400, 'Bad Request');
-    }
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
     next(error);
   }
@@ -136,21 +143,10 @@ const googleLogin = async (req, res, next) => {
   }
 };
 
-// GET /api/customers/verify-email/:token
-const verifyEmail = async (req, res, next) => {
-  try {
-    const decoded = jwt.verify(req.params.token, process.env.JWT_SECRET);
-    await springApi.put(`/customers/${decoded.id}/status`, { isActive: true });
-    return successResponse(res, null, 'Xác thực email thành công');
-  } catch (error) {
-    return errorResponse(res, 'Token không hợp lệ hoặc đã hết hạn', 400, 'Bad Request');
-  }
-};
-
 // DELETE /api/customers/deactivate
 const deactivate = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/status`, { isActive: false }, withUserHeaders(req.user.maKH, req.user.scope));
+    await springApi.put(`/customers/${req.user.maKH}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope));
     return successResponse(res, null, 'Vô hiệu hóa tài khoản thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -158,4 +154,4 @@ const deactivate = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, logout, getProfile, updateProfile, changePassword, forgotPassword, resetPassword, googleLogin, verifyEmail, deactivate };
+module.exports = { register, login, logout, getProfile, updateProfile, changePassword, forgotPassword, verifyOtp, resetPassword, googleLogin, deactivate };

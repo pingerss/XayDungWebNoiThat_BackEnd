@@ -1,0 +1,1286 @@
+{
+  "info": {
+    "_postman_id": "353d1978-ab48-40a2-9468-994a2ee94a46",
+    "name": "do_noi_that",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "50188144",
+    "_collection_link": "https://go.postman.co/collection/50188144-353d1978-ab48-40a2-9468-994a2ee94a46?source=collection_link"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://noi-that-api.onrender.com",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Google login",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Nguyễn Văn A\",\r\n    \"email\": \"nguyenvana@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/register",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "register_gg_customer",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"idGoogle\": \"google_id_123456\",\r\n    \"email\": \"nguyenvana@gmail.com\",\r\n    \"name\": \"Nguyễn Văn A\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/google",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "google"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "forgot-password",
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"ngobao6204@gmail.com\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/auth/forgot-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "auth",
+            "forgot-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login chung",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"ngobao6204@gmail.com\",\r\n    \"password\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Verify OTP",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"ngobao6204@gmail.com\",\r\n    \"otp\": \"169287\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/auth/verify-otp",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "auth",
+            "verify-otp"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Reset password with token",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"email\": \"ngobao6204@gmail.com\",\r\n    \"otp\": \"169287\",\r\n    \"newPassword\": \"ngobao0602\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/auth/reset-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "auth",
+            "reset-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/customers/email/ngobao6204@gmail.com",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/email/ngobao6204@gmail.com",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "email",
+            "ngobao6204@gmail.com"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get customers with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get  customers by id with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update name by id with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Nguyễn Văn B\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "change-password with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"oldPassword\": \"123456\",\r\n    \"newPassword\": \"ngobao0602\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/1/change-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "1",
+            "change-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deactivate with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"oldPassword\": \"123456\",\r\n    \"newPassword\": \"ngobao0602\"\r\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/1/deactivate",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "1",
+            "deactivate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update active with token admin staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/customers/1/status?isActive=true",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "customers",
+            "1",
+            "status"
+          ],
+          "query": [
+            {
+              "key": "isActive",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete staff with only token admin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfU1RBRkYiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.mnQoiVtvpue5J_wM2SbRmAA1Cdv3CFKdsQa2vgMkJWU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create staff/admin with token admin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Ngô Thành Bảo\",\r\n    \"email\": \"ngobaocoder12@gmail.com\",\r\n    \"password\": \"123456\",\r\n    \"type\": \"Admin\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get staff by",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/2",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get all staff với token admin/staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "update staff with token admin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"Ngô Bảo2\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/3",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "deactivate with token admin",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/1/deactivate",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "1",
+            "deactivate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "activate with token",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/1/activate",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "1",
+            "activate"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create order",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"customerId\": 1,\r\n  \"promotionId\": null,\r\n  \"customerName\": \"Nguyễn Văn B\",\r\n  \"customerPhone\": \"0901234567\",\r\n  \"customerAddress\": \"123 Đường ABC, Q1, HCM\",\r\n  \"method\": \"cod\",\r\n  \"subtotal\": 150000,\r\n  \"discountAmount\": 0,\r\n  \"totalPrice\": 150000,\r\n  \"note\": \"Giao giờ hành chính\",\r\n  \"items\": [\r\n    {\r\n      \"productAttributeId\": 2,\r\n      \"productName\": \"Áo thun nam trắng size L\",\r\n      \"productImage\": \"https://example.com/images/ao-thun-trang-l-1.jpg\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 150000,\r\n      \"total\": 150000\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/staff/1/password",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/1/password?newPassword=123456",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "1",
+            "password"
+          ],
+          "query": [
+            {
+              "key": "newPassword",
+              "value": "123456"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/staff/3/change-password",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfU1RBRkYiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.mnQoiVtvpue5J_wM2SbRmAA1Cdv3CFKdsQa2vgMkJWU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"oldPassword\": \"123123\",\r\n    \"newPassword\": \"123456\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/staff/1/change-password",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "staff",
+            "1",
+            "change-password"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get order by id order with token admin/staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders/11",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders",
+            "11"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "create order payvn",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"customerId\": 1,\r\n  \"promotionId\": 1,\r\n  \"customerName\": \"Nguyễn Văn B\",\r\n  \"customerPhone\": \"0901234567\",\r\n  \"customerAddress\": \"123 Đường ABC, Q1, HCM\",\r\n  \"method\": \"vnpay\",\r\n  \"subtotal\": 300000,\r\n  \"discountAmount\": 0,\r\n  \"totalPrice\": 300000,\r\n  \"note\": \"Thanh toán qua VNPay\",\r\n  \"items\": [\r\n    {\r\n      \"productAttributeId\": 3,\r\n      \"productName\": \"Áo thun nam trắng size L\",\r\n      \"productImage\": \"https://example.com/images/ao-thun-trang-l-1.jpg\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 150000,\r\n      \"total\": 150000\r\n    },\r\n    {\r\n      \"productAttributeId\": 2,\r\n      \"productName\": \"Áo thun nam đỏ size M\",\r\n      \"productImage\": \"https://example.com/images/ao-thun-do-m-1.jpg\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 150000,\r\n      \"total\": 150000\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "get customer by id customer with token admin/staff",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfQ1VTVE9NRVIiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.wOzfaJOHJlUlyPR7mfkzdPo7AO8l6PWIKTJaSQi5kZA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders/customer/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders",
+            "customer",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "confirmed status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"status\": \"confirmed\",\r\n    \"note\": \"Đã xác nhận\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders/11/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders",
+            "11",
+            "status"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "orders-cancel",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/orders/11/cancel",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "orders",
+            "11",
+            "cancel"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/payments/vnpay/create",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/payments/vnpay/create?orderId=15",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "payments",
+            "vnpay",
+            "create"
+          ],
+          "query": [
+            {
+              "key": "orderId",
+              "value": "15"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "payment vnpay",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"orderId\": 17,\r\n    \"method\": \"vnpay\",\r\n    \"amount\": 1500000.00\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/payments",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "payments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/order-details/order/1",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/order-details/order/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "order-details",
+            "order",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/order-details/10",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/order-details/10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "order-details",
+            "10"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/promotions",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX1NUQUZGIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.tNlkfauhbCYQfiOpWIj233qWYsGDV22Ea6C0eSEwyAk",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/promotions",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "promotions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/promotions/code/SUMMER30",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfU1RBRkYiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.mnQoiVtvpue5J_wM2SbRmAA1Cdv3CFKdsQa2vgMkJWU",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/promotions/code/SUMMER30",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "promotions",
+            "code",
+            "SUMMER30"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/promotions/validate/SUMMER30",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfQ1VTVE9NRVIiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.wOzfaJOHJlUlyPR7mfkzdPo7AO8l6PWIKTJaSQi5kZA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/promotions/validate/SUMMER30",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "promotions",
+            "validate",
+            "SUMMER30"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/promotions/active",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2Jhb2NvZGVyQGdtYWlsLmNvbSIsImlkIjoxLCJzY29wZSI6IlJPTEVfQ1VTVE9NRVIiLCJpYXQiOjE3NzU1MjY5OTUsImV4cCI6MTgwNzA2Mjk5NX0.wOzfaJOHJlUlyPR7mfkzdPo7AO8l6PWIKTJaSQi5kZA",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/internal/promotions/active",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "promotions",
+            "active"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "http://localhost:8080/api/internal/promotions/1",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJiYXJvLmNvbSIsInN1YiI6Im5nb2JhbzYyMDRAZ21haWwuY29tIiwic2NvcGUiOiJST0xFX0FETUlOIiwiZXhwIjoxODMwMjExMjAwLCJpYXQiOjE3NzUzMDk5NTV9.cos2WwwuLkNcjkaOzrq8jFJOtOkz-P02rn5lOfWHWiw",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Khuyến mãi hè giảm 35% - Cập nhật\",\r\n  \"description\": \"Tăng lên giảm 35% nhân dịp đặc biệt\",\r\n  \"type\": \"percentage\",\r\n  \"value\": 35.00,\r\n  \"startDay\": \"2026-06-01\",\r\n  \"endDay\": \"2026-07-10\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/api/internal/promotions/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "internal",
+            "promotions",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -26,6 +26,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.9.0",
     "docx": "^9.6.1",
     "marked": "^17.0.6",
     "nodemon": "^3.0.3"

@@ -9,7 +9,7 @@ router.post('/login', customerController.login);
 router.post('/forgot-password', customerController.forgotPassword);
 router.post('/reset-password', customerController.resetPassword);
 router.post('/google', customerController.googleLogin);
-router.get('/verify-email/:token', customerController.verifyEmail);
+router.post('/verify-otp', customerController.verifyOtp);
 
 // Protected
 router.post('/logout', verifyToken, customerController.logout);

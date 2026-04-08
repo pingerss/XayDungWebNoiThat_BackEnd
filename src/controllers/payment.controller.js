@@ -5,7 +5,10 @@ const { successResponse, createdResponse, errorResponse } = require('../utils/re
 // POST /api/payments/vnpay/create
 const createVnpay = async (req, res, next) => {
   try {
-    const response = await springApi.post('/payments/vnpay/create', { ...req.body, customerId: req.user.maKH }, withUserHeaders(req.user.maKH, req.user.scope));
+    const response = await springApi.post('/payments/vnpay/create', null, { 
+      params: { orderId: req.body.orderId },
+      ...withUserHeaders(req.user.maKH, req.user.scope)
+    });
     return createdResponse(res, response.data, 'Tạo thanh toán VNPay thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
