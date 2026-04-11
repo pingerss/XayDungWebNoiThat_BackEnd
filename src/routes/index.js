@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
+// Auth Routes (unified login)
+const authRoutes = require('./auth.routes');
+
 // Public Routes
 const customerRoutes = require('./customer.routes');
 const categoryRoutes = require('./category.routes');
@@ -19,6 +22,9 @@ const staffRoutes = require('./staff.routes');
 
 // Admin Routes
 const adminRoutes = require('./admin.routes');
+
+// Register auth routes
+router.use('/auth', authRoutes);
 
 // Register public/protected routes
 router.use('/customers', customerRoutes);

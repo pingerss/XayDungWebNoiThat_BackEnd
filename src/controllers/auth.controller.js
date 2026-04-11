@@ -1,0 +1,56 @@
+// AUTH CONTROLLER - Unified Login
+// 1 URL duy nhất: POST /api/auth/login
+// Tự động xác định role dựa vào response từ Spring Boot
+
+const jwt = require('jsonwebtoken');
+const { springApi } = require('../services/springboot.service');
+const { successResponse, errorResponse } = require('../utils/response');
+const { ROLES, STAFF_TYPE } = require('../config/constants');
+
+/**
+ * POST /api/auth/login
+ * Body: { email, password }
+ *
+ * Spring Boot trả về:
+ *   - Customer: { id, email, ... }        → scope = ROLE_CUSTOMER
+ *   - Staff:    { id, email, type: 'Staff', ... }  → scope = ROLE_STAFF
+ *   - Admin:    { id, email, type: 'Admin', ... }  → scope = ROLE_ADMIN
+ *
+ * JWT trả về có field `scope` để frontend biết role.
+ */
+const unifiedLogin = async (req, res, next) => {
+  try {
+    const response = await springApi.post('/auth/login', req.body);
+    const user = response.data.result || response.data;
+
+    // Xác định role dựa vào field `type` từ Spring Boot
+    let scope;
+    if (user.type === STAFF_TYPE.ADMIN) {
+      scope = ROLES.ADMIN;
+    } else if (user.type === STAFF_TYPE.STAFF) {
+      scope = ROLES.STAFF;
+    } else {
+      scope = ROLES.CUSTOMER;
+    }
+
+    // Tạo JWT chứa đầy đủ thông tin role
+    const token = jwt.sign(
+      {
+        sub: user.email,
+        maKH: user.id,
+        scope,
+        type: user.type || 'Customer'
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: scope === ROLES.CUSTOMER ? '24h' : '8h' }
+    );
+
+    return successResponse(res, { token, user, scope }, 'Đăng nhập thành công');
+  } catch (error) {
+    if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
+    if (error.response) return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
+    next(error);
+  }
+};
+
+module.exports = { unifiedLogin };

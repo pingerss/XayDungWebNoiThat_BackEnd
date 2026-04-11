@@ -94,9 +94,19 @@ const changePassword = async (req, res, next) => {
 // POST /api/customers/forgot-password
 const forgotPassword = async (req, res, next) => {
   try {
-    await springApi.post('/auth/forgot-password', { email: req.body.email });
+    const response = await springApi.post('/auth/forgot-password', { email: req.body.email });
+    console.log('[ForgotPassword] Spring Boot response:', JSON.stringify(response.data));
     return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
   } catch (error) {
+    // Log chi tiết lỗi từ Spring Boot để debug
+    if (error.response) {
+      console.error('[ForgotPassword] ❌ Spring Boot error:', error.response.status, JSON.stringify(error.response.data));
+    } else if (error.statusCode === 503) {
+      console.error('[ForgotPassword] ❌ Spring Boot không khả dụng (503)');
+    } else {
+      console.error('[ForgotPassword] ❌ Unknown error:', error.message);
+    }
+    // Vẫn trả về 200 để không lộ thông tin email (security by design)
     return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
   }
 };
