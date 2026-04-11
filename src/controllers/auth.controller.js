@@ -23,6 +23,17 @@ const unifiedLogin = async (req, res, next) => {
     const response = await springApi.post('/auth/login', req.body);
     const user = response.data.result || response.data;
 
+    // Spring Boot có thể trả về HTTP 200 nhưng chứa code lỗi bên trong
+    // Ví dụ: { code: 2998, message: "Không tìm thấy người dùng" }
+    if (user && user.code && user.code !== 200 && user.code !== 1000) {
+      return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
+    }
+
+    // Kiểm tra user có hợp lệ không (phải có id hoặc email)
+    if (!user || (!user.id && !user.email)) {
+      return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
+    }
+
     // Xác định role dựa vào field `type` từ Spring Boot
     let scope;
     if (user.type === STAFF_TYPE.ADMIN) {
