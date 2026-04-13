@@ -21,7 +21,7 @@ const setupSocket = (io) => {
     console.log(`🔌 User connected: ${socket.user.sub} (Socket: ${socket.id})`);
 
     // Join user's personal room
-    socket.join(`user_${socket.user.maKH}`);
+    socket.join(`user_${socket.user.ma}`);
 
     // Track order
     socket.on('track-order', ({ orderId }) => {

@@ -15,7 +15,7 @@ const getOrCreateCart = async (customerId) => {
 // GET /api/cart
 const getCart = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
 
     const cartWithItems = await Cart.findByPk(cart.id, {
       include: [{
@@ -42,7 +42,7 @@ const getCart = async (req, res, next) => {
 // GET /api/cart/items/count
 const getItemCount = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const count = await CartItem.sum('quantity', { where: { cartId: cart.id } });
     return successResponse(res, { count: count || 0 }, 'Lấy số lượng items thành công');
   } catch (error) {
@@ -53,7 +53,7 @@ const getItemCount = async (req, res, next) => {
 // GET /api/cart/total
 const getTotal = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const items = await CartItem.findAll({ where: { cartId: cart.id } });
 
     const total = items.reduce((sum, item) => {
@@ -82,7 +82,7 @@ const addItem = async (req, res, next) => {
       return errorResponse(res, `Không đủ số lượng trong kho. Còn lại: ${attr.stock}`, 422, 'Unprocessable Entity');
     }
 
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
 
     // Check if item already in cart
     let cartItem = await CartItem.findOne({
@@ -117,7 +117,7 @@ const addItem = async (req, res, next) => {
 const updateItem = async (req, res, next) => {
   try {
     const { quantity } = req.body;
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
 
     const item = await CartItem.findOne({
       where: { id: req.params.itemId, cartId: cart.id }
@@ -142,7 +142,7 @@ const updateItem = async (req, res, next) => {
 // DELETE /api/cart/remove/:itemId
 const removeItem = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const item = await CartItem.findOne({
       where: { id: req.params.itemId, cartId: cart.id }
     });
@@ -159,7 +159,7 @@ const removeItem = async (req, res, next) => {
 // DELETE /api/cart/clear
 const clearCart = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     await CartItem.destroy({ where: { cartId: cart.id } });
     return successResponse(res, null, 'Xóa toàn bộ giỏ hàng thành công');
   } catch (error) {
@@ -184,7 +184,7 @@ const applyPromotion = async (req, res, next) => {
     }
 
     // Calculate discount (Node.js tính toán vì Cart là của Node.js)
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const items = await CartItem.findAll({ where: { cartId: cart.id } });
     const subtotal = items.reduce((sum, item) => sum + (parseFloat(item.price) * item.quantity), 0);
 
@@ -221,7 +221,7 @@ const removePromotion = async (req, res, next) => {
 const syncCart = async (req, res, next) => {
   try {
     const { items } = req.body; // Array of { productId, productAttributeId, quantity }
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
 
     if (items && items.length > 0) {
       for (const item of items) {
@@ -257,7 +257,7 @@ const syncCart = async (req, res, next) => {
 // GET /api/cart/checkout-info
 const getCheckoutInfo = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const items = await CartItem.findAll({
       where: { cartId: cart.id },
       include: [
@@ -286,7 +286,7 @@ const getCheckoutInfo = async (req, res, next) => {
 // GET /api/cart/items
 const getAllItems = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const items = await CartItem.findAll({
       where: { cartId: cart.id },
       include: [
@@ -303,7 +303,7 @@ const getAllItems = async (req, res, next) => {
 // GET /api/cart/items/:itemId
 const getItemById = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const item = await CartItem.findOne({
       where: { id: req.params.itemId, cartId: cart.id },
       include: [
@@ -323,7 +323,7 @@ const getItemById = async (req, res, next) => {
 const updateItemQuantity = async (req, res, next) => {
   try {
     const { quantity } = req.body;
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
 
     const item = await CartItem.findOne({
       where: { id: req.params.itemId, cartId: cart.id }
@@ -348,7 +348,7 @@ const updateItemQuantity = async (req, res, next) => {
 // DELETE /api/cart/items/:itemId
 const deleteItem = async (req, res, next) => {
   try {
-    const cart = await getOrCreateCart(req.user.maKH);
+    const cart = await getOrCreateCart(req.user.ma);
     const item = await CartItem.findOne({
       where: { id: req.params.itemId, cartId: cart.id }
     });

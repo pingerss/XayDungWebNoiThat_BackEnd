@@ -37,7 +37,7 @@ const login = async (req, res, next) => {
     const customer = response.data.result || response.data;
 
     const token = jwt.sign(
-      { sub: customer.email, maKH: customer.id, scope: ROLES.CUSTOMER },
+      { sub: customer.email, ma: customer.id, scope: ROLES.CUSTOMER },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -58,7 +58,7 @@ const logout = async (req, res, next) => {
 // GET /api/customers/profile
 const getProfile = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/customers/${req.user.maKH}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/customers/${req.user.ma}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     const profileData = response.data.result || response.data;
     return successResponse(res, profileData, 'Lấy profile thành công');
   } catch (error) {
@@ -71,7 +71,7 @@ const getProfile = async (req, res, next) => {
 // PUT /api/customers/profile
 const updateProfile = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/customers/${req.user.maKH}`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.put(`/customers/${req.user.ma}`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Cập nhật profile thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -83,7 +83,7 @@ const updateProfile = async (req, res, next) => {
 // PUT /api/customers/change-password
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    await springApi.put(`/customers/${req.user.ma}/change-password`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -148,7 +148,7 @@ const googleLogin = async (req, res, next) => {
     const customer = data?.result ?? data;
 
     const token = jwt.sign(
-      { sub: customer.email, maKH: customer.id, scope: ROLES.CUSTOMER },
+      { sub: customer.email, ma: customer.id, scope: ROLES.CUSTOMER },
       process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
@@ -164,7 +164,7 @@ const googleLogin = async (req, res, next) => {
 // DELETE /api/customers/deactivate
 const deactivate = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    await springApi.put(`/customers/${req.user.ma}/deactivate`, {}, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Vô hiệu hóa tài khoản thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');

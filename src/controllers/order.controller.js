@@ -12,7 +12,7 @@ const getToken = (req) => {
 const create = async (req, res, next) => {
   try {
     const { customerName, customerPhone, customerAddress, method, promotionId, note } = req.body;
-    const customerId = req.user.maKH;
+    const customerId = req.user.ma;
 
     const cart = await Cart.findOne({ where: { customerId } });
     if (!cart) return errorResponse(res, 'Giỏ hàng trống', 400, 'Bad Request');
@@ -63,7 +63,7 @@ const create = async (req, res, next) => {
 // GET /api/orders (my orders)
 const getMyOrders = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/orders/customer/${req.user.maKH}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/orders/customer/${req.user.ma}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Lấy danh sách đơn hàng thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -74,7 +74,7 @@ const getMyOrders = async (req, res, next) => {
 // GET /api/orders/:id
 const getById = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data);
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -86,7 +86,7 @@ const getById = async (req, res, next) => {
 // GET /api/orders/:id/status
 const getStatus = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/orders/${req.params.id}/status`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/orders/${req.params.id}/status`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data);
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -97,7 +97,7 @@ const getStatus = async (req, res, next) => {
 // PUT /api/orders/:id/cancel
 const cancel = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/orders/${req.params.id}/cancel`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.put(`/orders/${req.params.id}/cancel`, {}, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
 
     if (response.data?.orderDetails) {
       for (const detail of response.data.orderDetails) {
@@ -116,7 +116,7 @@ const cancel = async (req, res, next) => {
 // POST /api/orders/:id/confirm
 const confirm = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/orders/${req.params.id}/status`, { status: 'confirmed' }, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.put(`/orders/${req.params.id}/status`, { status: 'confirmed' }, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Xác nhận đơn hàng thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -138,11 +138,11 @@ const tracking = async (req, res, next) => {
 // POST /api/orders/:id/reorder
 const reorder = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     const order = response.data;
 
-    const cart = await Cart.findOne({ where: { customerId: req.user.maKH } })
-      || await Cart.create({ customerId: req.user.maKH, sessionId: require('uuid').v4() });
+    const cart = await Cart.findOne({ where: { customerId: req.user.ma } })
+      || await Cart.create({ customerId: req.user.ma, sessionId: require('uuid').v4() });
 
     if (order.orderDetails) {
       for (const detail of order.orderDetails) {
@@ -175,27 +175,27 @@ const reorder = async (req, res, next) => {
 
 // === ADMIN ===
 const adminGetAll = async (req, res, next) => {
-  try { const r = await springApi.get('/orders', withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get('/orders', withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminGetById = async (req, res, next) => {
-  try { const r = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get(`/orders/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminUpdateStatus = async (req, res, next) => {
-  try { const r = await springApi.put(`/orders/${req.params.id}/status`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Cập nhật trạng thái thành công'); }
+  try { const r = await springApi.put(`/orders/${req.params.id}/status`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Cập nhật trạng thái thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminAssignShipper = async (req, res, next) => {
-  try { const r = await springApi.put(`/orders/${req.params.id}/status`, { status: 'shipping' }, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Gán shipper thành công'); }
+  try { const r = await springApi.put(`/orders/${req.params.id}/status`, { status: 'shipping' }, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Gán shipper thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminFilter = async (req, res, next) => {
-  try { const r = await springApi.get('/orders', { params: req.query, ...withUserHeaders(req.user.maKH, req.user.scope, getToken(req)) }); return successResponse(res, r.data); }
+  try { const r = await springApi.get('/orders', { params: req.query, ...withUserHeaders(req.user.ma, req.user.scope, getToken(req)) }); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminStatistics = async (req, res, next) => {
-  try { const r = await springApi.get('/orders/statistics', withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get('/orders/statistics', withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 

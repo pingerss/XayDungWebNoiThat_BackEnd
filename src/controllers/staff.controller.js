@@ -14,7 +14,7 @@ const logout = async (req, res, next) => {
 
 const getProfile = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/staff/${req.user.maKH}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/staff/${req.user.ma}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Lấy profile thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -24,7 +24,7 @@ const getProfile = async (req, res, next) => {
 
 const updateProfile = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/staff/${req.user.maKH}`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.put(`/staff/${req.user.ma}`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Cập nhật profile thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -34,7 +34,7 @@ const updateProfile = async (req, res, next) => {
 
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/staff/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    await springApi.put(`/staff/${req.user.ma}/change-password`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -45,31 +45,31 @@ const changePassword = async (req, res, next) => {
 
 // === ADMIN ===
 const adminGetAll = async (req, res, next) => {
-  try { const r = await springApi.get('/staff', withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get('/staff', withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminCreate = async (req, res, next) => {
-  try { const r = await springApi.post('/staff', req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return createdResponse(res, r.data, 'Tạo staff thành công'); }
+  try { const r = await springApi.post('/staff', req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return createdResponse(res, r.data, 'Tạo staff thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); if (e.response) return errorResponse(res, e.response.data?.message || 'Tạo thất bại', e.response.status); next(e); }
 };
 const adminGetById = async (req, res, next) => {
-  try { const r = await springApi.get(`/staff/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get(`/staff/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminUpdate = async (req, res, next) => {
-  try { const r = await springApi.put(`/staff/${req.params.id}`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Cập nhật thành công'); }
+  try { const r = await springApi.put(`/staff/${req.params.id}`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Cập nhật thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminDelete = async (req, res, next) => {
-  try { await springApi.delete(`/staff/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, null, 'Xóa thành công'); }
+  try { await springApi.delete(`/staff/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, null, 'Xóa thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminActivate = async (req, res, next) => {
-  try { const r = await springApi.put(`/staff/${req.params.id}/activate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Kích hoạt thành công'); }
+  try { const r = await springApi.put(`/staff/${req.params.id}/activate`, {}, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Kích hoạt thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminDeactivate = async (req, res, next) => {
-  try { const r = await springApi.put(`/staff/${req.params.id}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Vô hiệu hóa thành công'); }
+  try { const r = await springApi.put(`/staff/${req.params.id}/deactivate`, {}, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Vô hiệu hóa thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 

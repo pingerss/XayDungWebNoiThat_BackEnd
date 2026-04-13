@@ -12,7 +12,7 @@ const createVnpay = async (req, res, next) => {
   try {
     const response = await springApi.post('/payments/vnpay/create', null, {
       params: { orderId: req.body.orderId },
-      ...withUserHeaders(req.user.maKH, req.user.scope, getToken(req))
+      ...withUserHeaders(req.user.ma, req.user.scope, getToken(req))
     });
     return createdResponse(res, response.data, 'Tạo thanh toán VNPay thành công');
   } catch (error) {
@@ -47,7 +47,7 @@ const vnpayReturn = async (req, res, next) => {
 // GET /api/payments/:id/status
 const getStatus = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/payments/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/payments/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data);
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -58,7 +58,7 @@ const getStatus = async (req, res, next) => {
 // GET /api/payments/order/:orderId
 const getByOrder = async (req, res, next) => {
   try {
-    const response = await springApi.get(`/payments/order/${req.params.orderId}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.get(`/payments/order/${req.params.orderId}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return successResponse(res, response.data);
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -69,7 +69,7 @@ const getByOrder = async (req, res, next) => {
 // POST /api/payments/cod/confirm
 const confirmCod = async (req, res, next) => {
   try {
-    const response = await springApi.post('/payments', { ...req.body, method: 'cod', customerId: req.user.maKH }, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
+    const response = await springApi.post('/payments', { ...req.body, method: 'cod', customerId: req.user.ma }, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
     return createdResponse(res, response.data, 'Xác nhận thanh toán COD thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -79,15 +79,15 @@ const confirmCod = async (req, res, next) => {
 
 // === ADMIN ===
 const adminGetAll = async (req, res, next) => {
-  try { const r = await springApi.get('/payments', withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get('/payments', withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminGetById = async (req, res, next) => {
-  try { const r = await springApi.get(`/payments/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data); }
+  try { const r = await springApi.get(`/payments/${req.params.id}`, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 const adminRefund = async (req, res, next) => {
-  try { const r = await springApi.post(`/payments/${req.params.id}/refund`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Hoàn tiền thành công'); }
+  try { const r = await springApi.post(`/payments/${req.params.id}/refund`, {}, withUserHeaders(req.user.ma, req.user.scope, getToken(req))); return successResponse(res, r.data, 'Hoàn tiền thành công'); }
   catch (e) { if (e.statusCode === 503) return errorResponse(res, e.message, 503); next(e); }
 };
 
