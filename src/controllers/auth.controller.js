@@ -34,11 +34,14 @@ const unifiedLogin = async (req, res, next) => {
       return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
     }
 
-    // Xác định role dựa vào field `type` từ Spring Boot
+    // Xác định role dựa vào field `role` hoặc `type` từ Spring Boot
+    // Spring Boot có thể trả về: role: "Admin" | "Staff" | "Customer"
+    //                        hoặc: type: "Admin" | "Staff"
+    const roleField = user.role || user.type || '';
     let scope;
-    if (user.type === STAFF_TYPE.ADMIN) {
+    if (roleField === STAFF_TYPE.ADMIN) {
       scope = ROLES.ADMIN;
-    } else if (user.type === STAFF_TYPE.STAFF) {
+    } else if (roleField === STAFF_TYPE.STAFF) {
       scope = ROLES.STAFF;
     } else {
       scope = ROLES.CUSTOMER;

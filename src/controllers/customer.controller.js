@@ -11,7 +11,17 @@ const { ROLES } = require('../config/constants');
 const register = async (req, res, next) => {
   try {
     const response = await springApi.post('/customers/register', req.body);
-    return createdResponse(res, response.data, 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực.');
+    const data = response.data;
+
+    // Spring Boot có thể trả HTTP 200 nhưng body chứa code lỗi (vd: 2003 - Email đã tồn tại)
+    // Phải kiểm tra code trong body trước khi trả thành công
+    const errorCode = data?.code ?? data?.data?.code;
+    if (errorCode && errorCode !== 200 && errorCode !== 201) {
+      const errorMessage = data?.message ?? data?.data?.message ?? 'Đăng ký thất bại';
+      return errorResponse(res, errorMessage, 400, 'Bad Request');
+    }
+
+    return createdResponse(res, data, 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực.');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
     if (error.response) return errorResponse(res, error.response.data?.message || 'Đăng ký thất bại', error.response.status);
@@ -138,7 +148,17 @@ const resetPassword = async (req, res, next) => {
 const googleLogin = async (req, res, next) => {
   try {
     const response = await springApi.post('/customers/google', req.body);
-    const customer = response.data;
+    const data = response.data;
+
+    // Kiểm tra error code trong body (Spring Boot có thể trả HTTP 200 nhưng báo lỗi nghiệp vụ)
+    const errorCode = data?.code ?? data?.data?.code;
+    if (errorCode && errorCode !== 200 && errorCode !== 201) {
+      const errorMessage = data?.message ?? data?.data?.message ?? 'Đăng nhập Google thất bại';
+      return errorResponse(res, errorMessage, 400, 'Bad Request');
+    }
+
+    // Spring Boot bọc customer trong result: { code, message, result: { id, email, ... } }
+    const customer = data?.result ?? data;
 
     const token = jwt.sign(
       { sub: customer.email, maKH: customer.id, scope: ROLES.CUSTOMER },
@@ -149,6 +169,7 @@ const googleLogin = async (req, res, next) => {
     return successResponse(res, { token, customer }, 'Đăng nhập Google thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
+    if (error.response) return errorResponse(res, error.response.data?.message || 'Đăng nhập Google thất bại', error.response.status);
     next(error);
   }
 };
