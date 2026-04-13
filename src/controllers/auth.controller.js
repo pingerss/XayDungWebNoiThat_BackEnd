@@ -51,7 +51,7 @@ const unifiedLogin = async (req, res, next) => {
     const token = jwt.sign(
       {
         sub: user.email,
-        maKH: user.id,
+        ma: user.id,
         scope
       },
       process.env.JWT_SECRET,

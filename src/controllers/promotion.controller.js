@@ -1,8 +1,13 @@
 // PROMOTION CONTROLLER - Proxy to Spring Boot
-const { springApi } = require('../services/springboot.service');
+const { springApi, withUserHeaders } = require('../services/springboot.service');
 const { successResponse, createdResponse, errorResponse } = require('../utils/response');
 
-// GET /api/promotions
+const getToken = (req) => {
+  const auth = req.headers.authorization || '';
+  return auth.startsWith('Bearer ') ? auth.slice(7) : null;
+};
+
+// GET /api/promotions (public)
 const getActive = async (req, res, next) => {
   try {
     const response = await springApi.get('/promotions/active');
@@ -13,7 +18,7 @@ const getActive = async (req, res, next) => {
   }
 };
 
-// GET /api/promotions/:id
+// GET /api/promotions/:id (public)
 const getById = async (req, res, next) => {
   try {
     const response = await springApi.get(`/promotions/${req.params.id}`);
@@ -25,7 +30,7 @@ const getById = async (req, res, next) => {
   }
 };
 
-// GET /api/promotions/validate/:code
+// GET /api/promotions/validate/:code (public)
 const validate = async (req, res, next) => {
   try {
     const response = await springApi.get(`/promotions/validate/${req.params.code}`);
@@ -36,7 +41,7 @@ const validate = async (req, res, next) => {
   }
 };
 
-// GET /api/promotions/code/:code
+// GET /api/promotions/code/:code (public)
 const getByCode = async (req, res, next) => {
   try {
     const response = await springApi.get(`/promotions/validate/${req.params.code}`);
@@ -47,15 +52,13 @@ const getByCode = async (req, res, next) => {
   }
 };
 
-// GET /api/promotions/for-product/:productId
+// GET /api/promotions/for-product/:productId (public)
 const getForProduct = async (req, res, next) => {
   try {
-    // Lấy product từ DB Node.js để biết categoryId
     const { Product } = require('../models');
     const product = await Product.findByPk(req.params.productId);
     if (!product) return errorResponse(res, 'Sản phẩm không tồn tại', 404, 'Not Found');
 
-    // Gọi Spring Boot lấy promotions theo category
     const response = await springApi.get(`/category-promotions/category/${product.categoryId}`);
     return successResponse(res, response.data, 'Lấy khuyến mãi cho sản phẩm thành công');
   } catch (error) {
@@ -64,11 +67,10 @@ const getForProduct = async (req, res, next) => {
   }
 };
 
-// === ADMIN (proxy to Spring Boot) ===
-
+// === ADMIN ===
 const create = async (req, res, next) => {
   try {
-    const response = await springApi.post('/promotions', req.body);
+    const response = await springApi.post('/promotions', req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return createdResponse(res, response.data, 'Tạo khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -79,7 +81,7 @@ const create = async (req, res, next) => {
 
 const update = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/promotions/${req.params.id}`, req.body);
+    const response = await springApi.put(`/promotions/${req.params.id}`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Cập nhật khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -90,7 +92,7 @@ const update = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    await springApi.delete(`/promotions/${req.params.id}`);
+    await springApi.delete(`/promotions/${req.params.id}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Xóa khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -100,7 +102,7 @@ const remove = async (req, res, next) => {
 
 const activate = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/promotions/${req.params.id}`, { isActive: true });
+    const response = await springApi.put(`/promotions/${req.params.id}/activate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Kích hoạt khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -110,7 +112,7 @@ const activate = async (req, res, next) => {
 
 const deactivate = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/promotions/${req.params.id}`, { isActive: false });
+    const response = await springApi.put(`/promotions/${req.params.id}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Vô hiệu hóa khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -120,7 +122,7 @@ const deactivate = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const response = await springApi.get('/promotions/active');
+    const response = await springApi.get('/promotions', withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Lấy tất cả khuyến mãi thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');

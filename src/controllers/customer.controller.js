@@ -1,11 +1,14 @@
 // CUSTOMER CONTROLLER - Proxy to Spring Boot
-// Node.js BFF chỉ forward request tới Spring Boot Internal API
-// JWT được tạo/verify ở Node.js, nhưng data Customer nằm ở Spring Boot
-
 const jwt = require('jsonwebtoken');
 const { springApi, withUserHeaders } = require('../services/springboot.service');
 const { successResponse, createdResponse, errorResponse } = require('../utils/response');
 const { ROLES } = require('../config/constants');
+
+// Lấy raw JWT token từ Authorization header
+const getToken = (req) => {
+  const auth = req.headers.authorization || '';
+  return auth.startsWith('Bearer ') ? auth.slice(7) : null;
+};
 
 // POST /api/customers/register
 const register = async (req, res, next) => {
@@ -13,8 +16,6 @@ const register = async (req, res, next) => {
     const response = await springApi.post('/customers/register', req.body);
     const data = response.data;
 
-    // Spring Boot có thể trả HTTP 200 nhưng body chứa code lỗi (vd: 2003 - Email đã tồn tại)
-    // Phải kiểm tra code trong body trước khi trả thành công
     const errorCode = data?.code ?? data?.data?.code;
     if (errorCode && errorCode !== 200 && errorCode !== 201) {
       const errorMessage = data?.message ?? data?.data?.message ?? 'Đăng ký thất bại';
@@ -29,14 +30,12 @@ const register = async (req, res, next) => {
   }
 };
 
-// POST /api/customers/login
+// POST /api/customers/login - ĐÃ DEPRECATED, dùng POST /api/auth/login
 const login = async (req, res, next) => {
   try {
     const response = await springApi.post('/auth/login', req.body);
-    // Spring Boot trả về cấu trúc { code, message, result: { ... } }
     const customer = response.data.result || response.data;
 
-    // Node.js tạo JWT token
     const token = jwt.sign(
       { sub: customer.email, maKH: customer.id, scope: ROLES.CUSTOMER },
       process.env.JWT_SECRET,
@@ -53,21 +52,13 @@ const login = async (req, res, next) => {
 
 // POST /api/customers/logout
 const logout = async (req, res, next) => {
-  try {
-    return successResponse(res, null, 'Đăng xuất thành công');
-  } catch (error) {
-    next(error);
-  }
+  return successResponse(res, null, 'Đăng xuất thành công');
 };
 
 // GET /api/customers/profile
 const getProfile = async (req, res, next) => {
   try {
-    const headers = { ...withUserHeaders(req.user.maKH, req.user.scope).headers };
-    if (req.header('Authorization')) headers['Authorization'] = req.header('Authorization');
-
-    const response = await springApi.get(`/customers/${req.user.maKH}`, { headers });
-    // Bóc tách result nếu Spring Boot dùng vỏ bọc cho profile
+    const response = await springApi.get(`/customers/${req.user.maKH}`, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     const profileData = response.data.result || response.data;
     return successResponse(res, profileData, 'Lấy profile thành công');
   } catch (error) {
@@ -80,7 +71,7 @@ const getProfile = async (req, res, next) => {
 // PUT /api/customers/profile
 const updateProfile = async (req, res, next) => {
   try {
-    const response = await springApi.put(`/customers/${req.user.maKH}`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
+    const response = await springApi.put(`/customers/${req.user.maKH}`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, response.data, 'Cập nhật profile thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -92,7 +83,7 @@ const updateProfile = async (req, res, next) => {
 // PUT /api/customers/change-password
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope));
+    await springApi.put(`/customers/${req.user.maKH}/change-password`, req.body, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
@@ -108,7 +99,6 @@ const forgotPassword = async (req, res, next) => {
     console.log('[ForgotPassword] Spring Boot response:', JSON.stringify(response.data));
     return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
   } catch (error) {
-    // Log chi tiết lỗi từ Spring Boot để debug
     if (error.response) {
       console.error('[ForgotPassword] ❌ Spring Boot error:', error.response.status, JSON.stringify(error.response.data));
     } else if (error.statusCode === 503) {
@@ -116,12 +106,11 @@ const forgotPassword = async (req, res, next) => {
     } else {
       console.error('[ForgotPassword] ❌ Unknown error:', error.message);
     }
-    // Vẫn trả về 200 để không lộ thông tin email (security by design)
     return successResponse(res, null, 'Nếu email tồn tại, mã OTP đã được gửi đến thiết bị của bạn.');
   }
 };
 
-// Vui lòng thêm route POST /api/customers/verify-otp ở file router (gọi hàm này)
+// POST /api/customers/verify-otp
 const verifyOtp = async (req, res, next) => {
   try {
     await springApi.post('/auth/verify-otp', { email: req.body.email, otp: req.body.otp });
@@ -150,14 +139,12 @@ const googleLogin = async (req, res, next) => {
     const response = await springApi.post('/customers/google', req.body);
     const data = response.data;
 
-    // Kiểm tra error code trong body (Spring Boot có thể trả HTTP 200 nhưng báo lỗi nghiệp vụ)
     const errorCode = data?.code ?? data?.data?.code;
     if (errorCode && errorCode !== 200 && errorCode !== 201) {
       const errorMessage = data?.message ?? data?.data?.message ?? 'Đăng nhập Google thất bại';
       return errorResponse(res, errorMessage, 400, 'Bad Request');
     }
 
-    // Spring Boot bọc customer trong result: { code, message, result: { id, email, ... } }
     const customer = data?.result ?? data;
 
     const token = jwt.sign(
@@ -177,7 +164,7 @@ const googleLogin = async (req, res, next) => {
 // DELETE /api/customers/deactivate
 const deactivate = async (req, res, next) => {
   try {
-    await springApi.put(`/customers/${req.user.maKH}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope));
+    await springApi.put(`/customers/${req.user.maKH}/deactivate`, {}, withUserHeaders(req.user.maKH, req.user.scope, getToken(req)));
     return successResponse(res, null, 'Vô hiệu hóa tài khoản thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
