@@ -6,7 +6,7 @@ const API_KEY = process.env.INTERNAL_API_KEY || 'internal-api-key';
 // Create axios instance for Spring Boot calls
 const springApi = axios.create({
   baseURL: `${SPRING_BOOT_URL}/api/internal`,
-  timeout: 10000,
+  timeout: 60000, // 60s - Render free tier cần thời gian wake up
   headers: {
     'Content-Type': 'application/json',
     'X-API-Key': API_KEY
@@ -37,11 +37,12 @@ springApi.interceptors.response.use(
   }
 );
 
-// Helper: forward user info in headers
-const withUserHeaders = (userId, userRole) => ({
+// Helper: forward user info + JWT token to Spring Boot
+const withUserHeaders = (userId, userRole, token) => ({
   headers: {
     'X-User-Id': userId,
-    'X-User-Role': userRole
+    'X-User-Role': userRole,
+    ...(token && { 'Authorization': `Bearer ${token}` })
   }
 });
 

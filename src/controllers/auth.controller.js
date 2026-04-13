@@ -52,8 +52,7 @@ const unifiedLogin = async (req, res, next) => {
       {
         sub: user.email,
         maKH: user.id,
-        scope,
-        type: user.type || 'Customer'
+        scope
       },
       process.env.JWT_SECRET,
       { expiresIn: scope === ROLES.CUSTOMER ? '24h' : '8h' }

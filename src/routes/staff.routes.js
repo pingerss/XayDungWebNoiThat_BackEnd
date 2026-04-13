@@ -3,8 +3,6 @@ const router = express.Router();
 const staffController = require('../controllers/staff.controller');
 const verifyToken = require('../middleware/auth');
 
-// Public
-router.post('/login', staffController.login);
 
 // Protected
 router.post('/logout', verifyToken, staffController.logout);
