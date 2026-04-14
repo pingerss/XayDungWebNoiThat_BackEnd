@@ -34,11 +34,16 @@ const updateProfile = async (req, res, next) => {
 
 const changePassword = async (req, res, next) => {
   try {
-    await springApi.put(`/staff/${req.user.ma}/change-password`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
+    console.log('[Staff ChangePassword] userId:', req.user.ma, 'body:', req.body);
+    const response = await springApi.put(`/staff/${req.user.ma}/change-password`, req.body, withUserHeaders(req.user.ma, req.user.scope, getToken(req)));
+    console.log('[Staff ChangePassword] Spring response:', JSON.stringify(response.data));
     return successResponse(res, null, 'Đổi mật khẩu thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
-    if (error.response) return errorResponse(res, error.response.data?.message || 'Đổi mật khẩu thất bại', error.response.status);
+    if (error.response) {
+      console.error('[Staff ChangePassword] Spring error:', error.response.status, JSON.stringify(error.response.data));
+      return errorResponse(res, error.response.data?.message || 'Đổi mật khẩu thất bại', error.response.status);
+    }
     next(error);
   }
 };

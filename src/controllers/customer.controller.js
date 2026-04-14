@@ -1,8 +1,12 @@
 // CUSTOMER CONTROLLER - Proxy to Spring Boot
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 const { springApi, withUserHeaders } = require('../services/springboot.service');
 const { successResponse, createdResponse, errorResponse } = require('../utils/response');
 const { ROLES } = require('../config/constants');
+
+// Google OAuth2 client để xác thực ID Token từ frontend
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Lấy raw JWT token từ Authorization header
 const getToken = (req) => {
@@ -11,7 +15,7 @@ const getToken = (req) => {
 };
 
 // POST /api/customers/register
-const register = async (req, res, next) => {
+  const register = async (req, res, next) => {
   try {
     const response = await springApi.post('/customers/register', req.body);
     const data = response.data;
@@ -30,19 +34,43 @@ const register = async (req, res, next) => {
   }
 };
 
-// POST /api/customers/login - ĐÃ DEPRECATED, dùng POST /api/auth/login
+// POST /api/customers/login - DEPRECATED alias → dùng /api/auth/login
+// BUG FIX: endpoint này trước đây hardcode scope ROLE_CUSTOMER, gây ra lỗi
+// Admin/Staff đăng nhập qua đây sẽ nhận token với role sai.
+// Giờ chuyển sang dùng đúng logic detect role từ Spring Boot.
+const { STAFF_TYPE } = require('../config/constants');
 const login = async (req, res, next) => {
   try {
     const response = await springApi.post('/auth/login', req.body);
-    const customer = response.data.result || response.data;
+    const user = response.data.result || response.data;
+
+    // Kiểm tra lỗi từ Spring Boot (HTTP 200 nhưng có error code bên trong)
+    if (user && user.code && user.code !== 200 && user.code !== 1000) {
+      return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
+    }
+
+    if (!user || (!user.id && !user.email)) {
+      return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
+    }
+
+    // Detect role đúng từ Spring Boot thay vì hardcode CUSTOMER
+    const roleField = user.role || user.type || '';
+    let scope;
+    if (roleField === STAFF_TYPE.ADMIN) {
+      scope = ROLES.ADMIN;
+    } else if (roleField === STAFF_TYPE.STAFF) {
+      scope = ROLES.STAFF;
+    } else {
+      scope = ROLES.CUSTOMER;
+    }
 
     const token = jwt.sign(
-      { sub: customer.email, ma: customer.id, scope: ROLES.CUSTOMER },
+      { sub: user.email, ma: user.id, scope },
       process.env.JWT_SECRET,
-      { expiresIn: '24h' }
+      { expiresIn: scope === ROLES.CUSTOMER ? '24h' : '8h' }
     );
 
-    return successResponse(res, { token, customer }, 'Đăng nhập thành công');
+    return successResponse(res, { token, user, scope }, 'Đăng nhập thành công');
   } catch (error) {
     if (error.statusCode === 503) return errorResponse(res, error.message, 503, 'Service Unavailable');
     if (error.response) return errorResponse(res, 'Email hoặc mật khẩu không đúng', 401, 'Unauthorized');
@@ -134,9 +162,36 @@ const resetPassword = async (req, res, next) => {
 };
 
 // POST /api/customers/google
+// Frontend gửi: { idToken: "<Google ID Token>" }
+// Node.js xác thực với Google, lấy thông tin thật rồi gọi Spring Boot
 const googleLogin = async (req, res, next) => {
   try {
-    const response = await springApi.post('/customers/google', req.body);
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return errorResponse(res, 'Thiếu Google ID Token', 400, 'Bad Request');
+    }
+
+    // ✅ Xác thực ID Token với Google
+    let payload;
+    try {
+      const ticket = await googleClient.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch (googleErr) {
+      console.error('[GoogleLogin] ❌ Xác thực Google token thất bại:', googleErr.message);
+      return errorResponse(res, 'Google ID Token không hợp lệ hoặc đã hết hạn', 401, 'Unauthorized');
+    }
+
+    // Lấy thông tin user từ Google
+    const { sub: idGoogle, email, name, picture } = payload;
+
+    console.log(`[GoogleLogin] ✅ Xác thực thành công: email=${email}, idGoogle=${idGoogle}`);
+
+    // Gọi Spring Boot với thông tin đã xác thực (không thể bị giả mạo)
+    const response = await springApi.post('/customers/google', { idGoogle, email, name });
     const data = response.data;
 
     const errorCode = data?.code ?? data?.data?.code;
@@ -147,6 +202,7 @@ const googleLogin = async (req, res, next) => {
 
     const customer = data?.result ?? data;
 
+    // Tạo JWT nội bộ
     const token = jwt.sign(
       { sub: customer.email, ma: customer.id, scope: ROLES.CUSTOMER },
       process.env.JWT_SECRET,

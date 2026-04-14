@@ -7,21 +7,10 @@ const { springApi } = require('../services/springboot.service');
 const { successResponse, errorResponse } = require('../utils/response');
 const { ROLES, STAFF_TYPE } = require('../config/constants');
 
-/**
- * POST /api/auth/login
- * Body: { email, password }
- *
- * Spring Boot trả về:
- *   - Customer: { id, email, ... }        → scope = ROLE_CUSTOMER
- *   - Staff:    { id, email, type: 'Staff', ... }  → scope = ROLE_STAFF
- *   - Admin:    { id, email, type: 'Admin', ... }  → scope = ROLE_ADMIN
- *
- * JWT trả về có field `scope` để frontend biết role.
- */
 const unifiedLogin = async (req, res, next) => {
   try {
     const response = await springApi.post('/auth/login', req.body);
-    const user = response.data.result || response.data;
+    const user = response.data.result;
 
     // Spring Boot có thể trả về HTTP 200 nhưng chứa code lỗi bên trong
     // Ví dụ: { code: 2998, message: "Không tìm thấy người dùng" }
