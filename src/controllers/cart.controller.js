@@ -21,7 +21,19 @@ const getCart = async (req, res, next) => {
       include: [{
         model: CartItem,
         include: [
-          { model: Product, attributes: ['id', 'name'] },
+          {
+            model: Product,
+            attributes: ['id', 'name'],
+            include: [
+              {
+                model: ProductImage,
+                where: { isMain: true },
+                required: false,
+                attributes: ['id', 'imageUrl'],
+                limit: 1
+              }
+            ]
+          },
           {
             model: ProductAttribute,
             include: [
@@ -290,7 +302,19 @@ const getAllItems = async (req, res, next) => {
     const items = await CartItem.findAll({
       where: { cartId: cart.id },
       include: [
-        { model: Product, attributes: ['id', 'name'] },
+        {
+          model: Product,
+          attributes: ['id', 'name'],
+          include: [
+            {
+              model: ProductImage,
+              where: { isMain: true },
+              required: false,
+              attributes: ['id', 'imageUrl'],
+              limit: 1
+            }
+          ]
+        },
         { model: ProductAttribute, attributes: ['id', 'name', 'price', 'stock'] }
       ]
     });
