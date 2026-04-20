@@ -1,6 +1,6 @@
 {
 	"info": {
-		"name": "Nội Thất E-Commerce API test local ",
+		"name": "Nội Thất E-Commerce API   mới nhất 20/4/2026",
 		"description": "Full API collection for Node.js BFF Backend - 15 tables, ~125+ endpoints",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1305,7 +1305,7 @@
 			"name": "📦 ORDER",
 			"item": [
 				{
-					"name": "Create Order",
+					"name": "Create Order (Customer Only)",
 					"request": {
 						"method": "POST",
 						"url": "{{baseUrl}}/orders",
@@ -1321,15 +1321,15 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"customerName\": \"Nguyen Van A\",\n  \"customerPhone\": \"0901234567\",\n  \"customerAddress\": \"123 Nguyen Hue, Q1, HCM\",\n  \"method\": \"cod\",\n  \"note\": \"Giao giờ hành chính\"\n}"
+							"raw": "{\n  \"customerName\": \"Nguyen Van A\",\n  \"customerPhone\": \"0901234567\",\n  \"customerAddress\": \"123 Nguyen Hue, Q1, HCM\",\n  \"method\": \"COD\",\n  \"promotionId\": null,\n  \"discountAmount\": 0,\n  \"note\": \"Giao giu hanh chinh\"\n}"
 						}
 					}
 				},
 				{
-					"name": "Get My Orders",
+					"name": "Get All Orders (All Roles)",
 					"request": {
 						"method": "GET",
-						"url": "{{baseUrl}}/orders?page=1&limit=10",
+						"url": "{{baseUrl}}/orders",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1339,7 +1339,20 @@
 					}
 				},
 				{
-					"name": "Get By ID",
+					"name": "Get Orders By Customer Id (All Roles)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/orders/customer/1",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+					}
+				},
+				{
+					"name": "Get Order By Id (All Roles)",
 					"request": {
 						"method": "GET",
 						"url": "{{baseUrl}}/orders/1",
@@ -1352,95 +1365,10 @@
 					}
 				},
 				{
-					"name": "Get Status",
+					"name": "Update Order Status (Staff/Admin Only)",
 					"request": {
-						"method": "GET",
+						"method": "PUT",
 						"url": "{{baseUrl}}/orders/1/status",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "Cancel Order",
-					"request": {
-						"method": "PUT",
-						"url": "{{baseUrl}}/orders/1/cancel",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "Confirm Order (COD)",
-					"request": {
-						"method": "POST",
-						"url": "{{baseUrl}}/orders/1/confirm",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "Tracking",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/orders/tracking/1"
-					}
-				},
-				{
-					"name": "Reorder",
-					"request": {
-						"method": "POST",
-						"url": "{{baseUrl}}/orders/1/reorder",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Get All",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/orders?page=1&limit=10",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Get By ID",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/orders/1",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Update Status",
-					"request": {
-						"method": "PUT",
-						"url": "{{baseUrl}}/admin/orders/1/status",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1453,45 +1381,19 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"status\": \"confirmed\"\n}"
+							"raw": "{\n  \"status\": \"CONFIRMED\",\n  \"note\": \"Da xac nhan don hang\"\n}"
 						}
 					}
 				},
 				{
-					"name": "[ADMIN] Assign Shipper",
+					"name": "Cancel Order (Authenticated)",
 					"request": {
 						"method": "PUT",
-						"url": "{{baseUrl}}/admin/orders/1/assign-shipper",
+						"url": "{{baseUrl}}/orders/1/cancel",
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Filter",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/orders/filter?status=pending&page=1&limit=10",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Statistics",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/orders/statistics",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
+								"value": "Bearer {{token}}"
 							}
 						]
 					}
@@ -1502,7 +1404,7 @@
 			"name": "📋 ORDER DETAIL",
 			"item": [
 				{
-					"name": "Get By Order",
+					"name": "Get Order Details By Order Id (All Roles)",
 					"request": {
 						"method": "GET",
 						"url": "{{baseUrl}}/order-details/order/1",
@@ -1515,7 +1417,7 @@
 					}
 				},
 				{
-					"name": "Get By ID",
+					"name": "Get Order Detail By Id (All Roles)",
 					"request": {
 						"method": "GET",
 						"url": "{{baseUrl}}/order-details/1",
@@ -1526,19 +1428,6 @@
 							}
 						]
 					}
-				},
-				{
-					"name": "[ADMIN] Get By Order",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/order-details/order/1",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
 				}
 			]
 		},
@@ -1546,10 +1435,10 @@
 			"name": "💳 PAYMENT",
 			"item": [
 				{
-					"name": "Create VNPay",
+					"name": "Create Payment (All Roles)",
 					"request": {
 						"method": "POST",
-						"url": "{{baseUrl}}/payments/vnpay/create",
+						"url": "{{baseUrl}}/payments",
 						"header": [
 							{
 								"key": "Authorization",
@@ -1562,29 +1451,31 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"orderId\": 1\n}"
+							"raw": "{\n  \"orderId\": 1,\n  \"method\": \"VNPAY\",\n  \"amount\": 1000000\n}"
 						}
 					}
 				},
 				{
-					"name": "VNPay Callback",
+					"name": "Create VNPay Payment (Customer Only)",
 					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/payments/vnpay/callback?vnp_TxnRef=VNP_ABC123&vnp_ResponseCode=00"
-					}
-				},
-				{
-					"name": "VNPay Return",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/payments/vnpay/return?vnp_TxnRef=VNP_ABC123&vnp_ResponseCode=00"
-					}
-				},
-				{
-					"name": "Get Status",
-					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/payments/1/status",
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/payments/vnpay/create?orderId=1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"payments",
+								"vnpay",
+								"create"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "1"
+								}
+							]
+						},
 						"header": [
 							{
 								"key": "Authorization",
@@ -1594,7 +1485,20 @@
 					}
 				},
 				{
-					"name": "Get By Order",
+					"name": "Get Payment By Id (All Roles)",
+					"request": {
+						"method": "GET",
+						"url": "{{baseUrl}}/payments/1",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						]
+					}
+				},
+				{
+					"name": "Get Payment By Order Id (All Roles)",
 					"request": {
 						"method": "GET",
 						"url": "{{baseUrl}}/payments/order/1",
@@ -1607,28 +1511,7 @@
 					}
 				},
 				{
-					"name": "Confirm COD",
-					"request": {
-						"method": "POST",
-						"url": "{{baseUrl}}/payments/cod/confirm",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n  \"orderId\": 1\n}"
-						}
-					}
-				},
-				{
-					"name": "[ADMIN] Get All",
+					"name": "[ADMIN] Get All Payments",
 					"request": {
 						"method": "GET",
 						"url": "{{baseUrl}}/admin/payments",
@@ -1641,23 +1524,27 @@
 					}
 				},
 				{
-					"name": "[ADMIN] Get By ID",
+					"name": "[ADMIN] Update Payment Status (COD)",
 					"request": {
-						"method": "GET",
-						"url": "{{baseUrl}}/admin/payments/1",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{adminToken}}"
-							}
-						]
-					}
-				},
-				{
-					"name": "[ADMIN] Refund",
-					"request": {
-						"method": "POST",
-						"url": "{{baseUrl}}/admin/payments/1/refund",
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/admin/payments/1/status?status=success",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"admin",
+								"payments",
+								"1",
+								"status"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "success"
+								}
+							]
+						},
 						"header": [
 							{
 								"key": "Authorization",

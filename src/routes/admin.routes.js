@@ -13,8 +13,6 @@ const productAttributeController = require('../controllers/productAttribute.cont
 const productImageController = require('../controllers/productImage.controller');
 const promotionController = require('../controllers/promotion.controller');
 const categoryPromotionController = require('../controllers/categoryPromotion.controller');
-const orderController = require('../controllers/order.controller');
-const orderDetailController = require('../controllers/orderDetail.controller');
 const paymentController = require('../controllers/payment.controller');
 const staffController = require('../controllers/staff.controller');
 
@@ -68,21 +66,24 @@ router.post('/category-promotions', categoryPromotionController.create);
 router.delete('/category-promotions/:id', categoryPromotionController.remove);
 router.get('/category-promotions', categoryPromotionController.getAll);
 
-// Order Admin
-router.get('/orders', orderController.adminGetAll);
-router.get('/orders/filter', orderController.adminFilter);
-router.get('/orders/statistics', orderController.adminStatistics);
-router.get('/orders/:id', orderController.adminGetById);
-router.put('/orders/:id/status', orderController.adminUpdateStatus);
-router.put('/orders/:id/assign-shipper', orderController.adminAssignShipper);
+// Order Admin - Đã chuyển sang order.routes.js với phân quyền đúng:
+// GET  /api/orders              → getAll          (All Roles: verifyToken)
+// GET  /api/orders/customer/:id → getByCustomerId (All Roles: verifyToken)
+// GET  /api/orders/:id          → getById         (All Roles: verifyToken)
+// PUT  /api/orders/:id/status   → updateStatus    (Staff/Admin: verifyToken + verifyStaff)
+// PUT  /api/orders/:id/cancel   → cancel          (Authenticated: verifyToken)
+// POST /api/orders              → create          (Customer: verifyToken + verifyCustomer)
 
-// Order Detail Admin
-router.get('/order-details/order/:orderId', orderDetailController.adminGetByOrder);
+// Order Detail Admin - Đã chuyển sang orderDetail.routes.js:
+// GET /api/order-details/order/:orderId → getByOrder (All Roles: verifyToken)
+// GET /api/order-details/:id            → getById    (All Roles: verifyToken)
 
-// Payment Admin
+// Payment Admin (Staff/Admin only)
+// GET  /admin/payments              - Lấy tất cả payment
 router.get('/payments', paymentController.adminGetAll);
-router.get('/payments/:id', paymentController.adminGetById);
-router.post('/payments/:id/refund', paymentController.adminRefund);
+// PUT  /admin/payments/:id/status?status=success - Cập nhật trạng thái COD (Admin cập nhật thủ công)
+// VNPay tự động cập nhật status qua callback, COD admin tự cập nhật
+router.put('/payments/:id/status', paymentController.adminUpdateStatus);
 
 // Staff Admin (strict admin only for some)
 router.get('/staff', staffController.adminGetAll);

@@ -1,0 +1,1122 @@
+{
+  "info": {
+    "name": "Noi That API",
+    "description": "API documentation for Noi That e-commerce system",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"customer@example.com\",\n    \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/auth/login",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"customer@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/auth/forgot-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"customer@example.com\",\n    \"otp\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/auth/verify-otp",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "auth", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"customer@example.com\",\n    \"otp\": \"123456\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/auth/reset-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "auth", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Customers",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Nguyen Van A\",\n    \"email\": \"customer@example.com\",\n    \"password\": \"123456\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/register",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "register"]
+            }
+          }
+        },
+        {
+          "name": "Verify Login",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/verify?email=customer@example.com&password=123456",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "verify"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "customer@example.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123456"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Google Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"idGoogle\": \"123456789\",\n    \"email\": \"user@gmail.com\",\n    \"name\": \"Google User\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/google",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "google"]
+            }
+          }
+        },
+        {
+          "name": "Get Customer By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Customer By Email (Public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/email/customer@example.com",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "email", "customer@example.com"]
+            }
+          }
+        },
+        {
+          "name": "Update Customer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Nguyen Van B\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "1"]
+            }
+          }
+        },
+        {
+          "name": "Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"oldPassword\": \"123456\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/1/change-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "1", "change-password"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Customer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/1/deactivate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "1", "deactivate"]
+            }
+          }
+        },
+        {
+          "name": "Update Customer Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers/1/status?isActive=true",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers", "1", "status"],
+              "query": [
+                {
+                  "key": "isActive",
+                  "value": "true"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Customers (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/customers",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "customers"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Staff",
+      "item": [
+        {
+          "name": "Verify Staff Login",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/verify?email=admin@example.com&password=123456",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "verify"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "admin@example.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123456"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Staff By Email (Public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/email/admin@example.com",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "email", "admin@example.com"]
+            }
+          }
+        },
+        {
+          "name": "Get Staff By Id (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get All Staff (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff"]
+            }
+          }
+        },
+        {
+          "name": "Create Staff (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Staff Name\",\n    \"email\": \"staff@example.com\",\n    \"password\": \"123456\",\n    \"type\": \"STAFF\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff"]
+            }
+          }
+        },
+        {
+          "name": "Update Staff (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Updated Staff Name\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Staff (Admin Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1"]
+            }
+          }
+        },
+        {
+          "name": "Activate Staff (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1/activate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1", "activate"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Staff (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1/deactivate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1", "deactivate"]
+            }
+          }
+        },
+        {
+          "name": "Update Staff Password (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1/password?newPassword=newpassword123",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1", "password"],
+              "query": [
+                {
+                  "key": "newPassword",
+                  "value": "newpassword123"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Staff Change Password",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"oldPassword\": \"123456\",\n    \"newPassword\": \"newpassword123\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/staff/1/change-password",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "staff", "1", "change-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order (Customer Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"customerId\": 1,\n    \"promotionId\": null,\n    \"customerName\": \"Nguyen Van A\",\n    \"customerPhone\": \"0123456789\",\n    \"customerAddress\": \"123 Đường ABC, Quận 1, TP.HCM\",\n    \"method\": \"COD\",\n    \"subtotal\": 1000000,\n    \"discountAmount\": 0,\n    \"totalPrice\": 1000000,\n    \"note\": \"Giao hàng giờ hành chính\",\n    \"items\": [\n        {\n            \"productAttributeId\": 1,\n            \"productName\": \"Bàn gỗ công nghiệp\",\n            \"productImage\": \"https://example.com/image.jpg\",\n            \"quantity\": 2,\n            \"unitPrice\": 500000,\n            \"total\": 1000000\n        }\n    ]\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Get Order By Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Orders By Customer Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders/customer/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders", "customer", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get All Orders (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders"]
+            }
+          }
+        },
+        {
+          "name": "Update Order Status (Staff/Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"status\": \"CONFIRMED\",\n    \"note\": \"Đã xác nhận đơn hàng\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders/1/status",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders", "1", "status"]
+            }
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/orders/1/cancel",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "orders", "1", "cancel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Order Details",
+      "item": [
+        {
+          "name": "Get Order Details By Order Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/order-details/order/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "order-details", "order", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Order Detail By Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/order-details/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "order-details", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Create Payment",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"orderId\": 1,\n    \"method\": \"VNPAY\",\n    \"amount\": 1000000\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments"]
+            }
+          }
+        },
+        {
+          "name": "Create VNPay Payment (Customer Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments/vnpay/create?orderId=1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments", "vnpay", "create"],
+              "query": [
+                {
+                  "key": "orderId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "VNPay Callback (Public)",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments/vnpay/callback",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments", "vnpay", "callback"]
+            }
+          }
+        },
+        {
+          "name": "Get Payment By Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Payment By Order Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments/order/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments", "order", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Payment Status (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments/1/status?status=COMPLETED",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments", "1", "status"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "COMPLETED"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Payments (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/payments",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "payments"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Promotions",
+      "item": [
+        {
+          "name": "Get Promotion By Id (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Promotion By Code (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/code/SUMMER2024",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "code", "SUMMER2024"]
+            }
+          }
+        },
+        {
+          "name": "Validate Promotion Code (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/validate/SUMMER2024",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "validate", "SUMMER2024"]
+            }
+          }
+        },
+        {
+          "name": "Get Active Promotions (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/active",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "active"]
+            }
+          }
+        },
+        {
+          "name": "Get All Promotions (All Roles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions"]
+            }
+          }
+        },
+        {
+          "name": "Create Promotion (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"code\": \"SUMMER2024\",\n    \"name\": \"Khuyến mãi hè 2024\",\n    \"description\": \"Giảm giá 10% cho mọi đơn hàng\",\n    \"type\": \"PERCENTAGE\",\n    \"value\": 10,\n    \"startDay\": \"2024-06-01\",\n    \"endDay\": \"2024-08-31\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions"]
+            }
+          }
+        },
+        {
+          "name": "Update Promotion (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Khuyến mãi hè 2024 - Cập nhật\",\n    \"description\": \"Giảm giá 15% cho mọi đơn hàng\",\n    \"type\": \"PERCENTAGE\",\n    \"value\": 15,\n    \"startDay\": \"2024-06-01\",\n    \"endDay\": \"2024-09-30\"\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Delete Promotion (Admin Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "1"]
+            }
+          }
+        },
+        {
+          "name": "Activate Promotion (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/1/activate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "1", "activate"]
+            }
+          }
+        },
+        {
+          "name": "Deactivate Promotion (Admin Only)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/promotions/1/deactivate",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "promotions", "1", "deactivate"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Category Promotions",
+      "item": [
+        {
+          "name": "Get By Category Id (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/category-promotions/category/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "category-promotions", "category", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get By Promotion Id (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/category-promotions/promotion/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "category-promotions", "promotion", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get All (Staff/Admin Only)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/category-promotions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "category-promotions"]
+            }
+          }
+        },
+        {
+          "name": "Create (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"categoryId\": 1,\n    \"promotionId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/category-promotions",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "category-promotions"]
+            }
+          }
+        },
+        {
+          "name": "Delete (Admin Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{ACCESS_TOKEN}}"
+              }
+            ],
+            "url": {
+              "raw": "{{BASE_URL}}/api/internal/category-promotions/1",
+              "host": ["{{BASE_URL}}"],
+              "path": ["api", "internal", "category-promotions", "1"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "BASE_URL",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "ACCESS_TOKEN",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
