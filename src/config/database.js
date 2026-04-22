@@ -30,9 +30,9 @@ const sequelize = new Sequelize(database, username, password, {
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
-    console.log('✅ Kết nối database TiDB Cloud thành công.');
+    console.log(' Kết nối database TiDB Cloud thành công.');
   } catch (error) {
-    console.error('❌ Không thể kết nối database:', error);
+    console.error(' Không thể kết nối database:', error);
   }
 };
 
