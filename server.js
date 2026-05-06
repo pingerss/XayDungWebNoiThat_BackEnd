@@ -52,15 +52,15 @@ const startServer = async () => {
     await testConnection();
     // Sync models (don't alter tables since they already exist on cloud)
     await sequelize.sync({ alter: false });
-    console.log('✅ Models synced with database.');
+    console.log(' Models synced with database.');
 
     server.listen(PORT, () => {
-      console.log(`🚀 BFF Server is running on port ${PORT}`);
-      console.log(`📡 Socket.IO ready`);
-      console.log(`📋 API docs: http://localhost:${PORT}/health`);
+      console.log(` BFF Server is running on port ${PORT}`);
+      console.log(` Socket.IO ready`);
+      console.log(` API docs: http://localhost:${PORT}/health`);
     });
   } catch (error) {
-    console.error('❌ Server startup failed:', error);
+    console.error(' Server startup failed:', error);
     process.exit(1);
   }
 };

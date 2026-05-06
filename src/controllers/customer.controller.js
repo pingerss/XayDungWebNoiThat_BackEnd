@@ -34,10 +34,7 @@ const getToken = (req) => {
   }
 };
 
-// POST /api/customers/login - DEPRECATED alias → dùng /api/auth/login
-// BUG FIX: endpoint này trước đây hardcode scope ROLE_CUSTOMER, gây ra lỗi
-// Admin/Staff đăng nhập qua đây sẽ nhận token với role sai.
-// Giờ chuyển sang dùng đúng logic detect role từ Spring Boot.
+
 const { STAFF_TYPE } = require('../config/constants');
 const login = async (req, res, next) => {
   try {
